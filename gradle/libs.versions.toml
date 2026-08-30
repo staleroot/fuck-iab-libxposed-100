@@ -1,0 +1,11 @@
+[versions]
+agp = "9.3.2"
+annotation = "1.10.0"
+dexkit = "2.2.0"
+
+[libraries]
+androidx-annotation = { group = "androidx.annotation", name = "annotation", version.ref = "annotation" }
+dexkit = { module = "org.luckypray:dexkit", version.ref = "dexkit" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
