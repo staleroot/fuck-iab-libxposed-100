@@ -72,7 +72,7 @@ open class MainModule(base: XposedInterface, param: XposedModuleInterface.Module
 
     }
 
-//    private fun log(i: Int, tag: String, text: String) = log(text)
+    private fun log(i: Int, tag: String, text: String) = log(text)
 
     @RequiresApi(Build.VERSION_CODES.Q)
     private fun hookOnServiceConnected(param: PackageLoadedParam, bridge: DexKitBridge) {
@@ -102,8 +102,8 @@ open class MainModule(base: XposedInterface, param: XposedModuleInterface.Module
 //                            log("binder = ${realBinder.javaClass}")
 
                             val isGoogle = componentName.packageName == com_android_vending() && componentName.className == com_google_android_finsky_billing_iab_InAppBillingService()
-                            val isBazaar = componentName.packageName == com_farsitel_bazaar() && componentName.className == com_farsitel_bazaar_inappbilling_service_InAppBillingService()
-                            val isMyket = componentName.packageName == ir_mservices_market() && componentName.className == ir_mservices_market_service_InAppBillingService()
+                            val isBazaar = !isGoogle && componentName.packageName == com_farsitel_bazaar() && componentName.className == com_farsitel_bazaar_inappbilling_service_InAppBillingService()
+                            val isMyket = !isGoogle && !isBazaar && componentName.packageName == ir_mservices_market() && componentName.className == ir_mservices_market_service_InAppBillingService()
 
                             if (isGoogle || isBazaar || isMyket) {
                                 val fakeBinder = object : Binder(), IInterface {
