@@ -56,7 +56,7 @@ open class MainModule(base: XposedInterface, param: XposedModuleInterface.Module
 
                     DexKitBridge.create(param.applicationInfo.sourceDir).use { bridge ->
                         hookOnServiceConnected(param, bridge)
-                        hookBazaarSignatureVerifyMethods(param, bridge)
+                        hookSignatureVerificationMethods(param, bridge)
 
                         onInitialized(app, param, bridge)
                     }
@@ -325,12 +325,15 @@ open class MainModule(base: XposedInterface, param: XposedModuleInterface.Module
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)
-    private fun hookBazaarSignatureVerifyMethods(param: PackageLoadedParam, bridge: DexKitBridge) {
+    private fun hookSignatureVerificationMethods(param: PackageLoadedParam, bridge: DexKitBridge) {
         var m = bridge.findMethod {
             matcher {
                 returnType = boolean()
-                paramTypes(String::class.java, String::class.java, String::class.java)
-                usingStrings(Purchase_verification_failed())
+//                paramTypes(String::class.java, String::class.java, String::class.java)
+                usingStrings(
+                    Purchase_verification_failed(),
+                    Base64_decoding_failed()
+                )
             }
         }.singleOrNull()
         if (m != null) {
